@@ -114,3 +114,38 @@ where skill in ('Python', 'Tableau', 'PostgreSQL')
 group by candidate_id
 having count(skill) >= 3
 order by candidate_id;
+
+
+"""
+Histogram of Tweets [Twitter SQL Interview Question]
+
+Assume you're given a table Twitter tweet data, write a query to obtain a histogram of tweets posted per user in 2022. Output the tweet count per user as the bucket and the number of Twitter users who fall into that bucket.
+
+In other words, group the users by the number of tweets they posted in 2022 and count the number of users in each group.
+tweets Table:
+Column Name	Type
+tweet_id	integer
+user_id	integer
+msg	string
+tweet_date	timestamp
+
+Example Output:
+tweet_bucket	users_num
+1	2
+2	1
+
+The query groups the users by the number of tweets they posted and displays the number of users in each group.
+
+"""
+
+
+with cte_1 as
+(select count(*) as tweet_bucket from tweets
+group by user_id)
+
+-- this query gives us the the number of tweets per user.
+
+-- now I have to bin the number of users per tweet count 
+
+select width_bucket(tweet_bucket,0,4,2) as tweet_bucket, count(tweet_bucket) as users_num from cte_1
+group by tweet_bucket;
