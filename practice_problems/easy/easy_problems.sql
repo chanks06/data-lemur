@@ -141,7 +141,9 @@ The query groups the users by the number of tweets they posted and displays the 
 
 with cte_1 as
 (select count(*) as tweet_bucket from tweets
+WHERE EXTRACT(YEAR FROM tweet_date) = 2022
 group by user_id)
+
 
 -- this query gives us the the number of tweets per user.
 
@@ -149,3 +151,4 @@ group by user_id)
 
 select width_bucket(tweet_bucket,0,4,2) as tweet_bucket, count(tweet_bucket) as users_num from cte_1
 group by tweet_bucket;
+
